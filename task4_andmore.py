@@ -10,10 +10,6 @@ PIC_TEST = 10000
 M = 500                 # Intermediate layer
 CLASS = 10
 
-# Dropout
-# 0: off, 1: on
-DROPOUT = 0
-
 # Activate function
 # 0: sigmoid, 1: ReLU
 ACTFUN = 1
