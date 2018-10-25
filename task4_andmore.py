@@ -1,7 +1,8 @@
 import numpy as np
 from mnist import MNIST
 
-mndata = MNIST("C:\datasets")
+# mndata = MNIST("C:\datasets")
+mndata = MNIST("/export/home/016/a0161419/le4nn")
 
 SIZEX, SIZEY = 28, 28
 PIC_LEARN = 60000
@@ -68,10 +69,11 @@ def layer(x, W, b, actfun):
         return softmax(t)
 
 
-BATCH = 812
-EPOCH = 1000
+BATCH = 500
+EPOCH = 500
 l_or_t = input("Learning or training? (Training : 0, Testing : 1) : ")
-if l_or_t == "0":
+l_or_t = int(l_or_t)
+if l_or_t == 0:
     # Preprocessing
     X, Y = mndata.load_training()
     X = np.array(X)
@@ -180,7 +182,7 @@ if l_or_t == "0":
 
         np.savez("test.npz", W1, b1, W2, b2)
 
-elif l_or_t == "1":
+elif l_or_t == 1:
     rate = 0
 
     # idx = input("Please select a image (0-9999) : ")
