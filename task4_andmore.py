@@ -10,9 +10,15 @@ PIC_TEST = 10000
 M = 500                 # Intermediate layer
 CLASS = 10
 
+# Batch & Epoch
+BATCH = 512
+EPOCH = 1000
+
 # Dropout
 # 0: off, 1: on
-DROPOUT = 0
+DROPOUT = 1
+Dropout_Be = np.zeros((M, BATCH))
+RHO_DO = 0.5
 
 # Activate function
 # 0: sigmoid, 1: ReLU
@@ -107,8 +113,8 @@ def layer(x, W, b, actfun):
         return softmax(t)
 
 
-BATCH = 512
-EPOCH = 784
+np.set_printoptions(threshold=np.inf)
+
 l_or_t = input("Learning or training? (Training : 0, Testing : 1) : ")
 l_or_t = int(l_or_t)
 if l_or_t == 0:
@@ -175,6 +181,15 @@ if l_or_t == 0:
         v_b1 = np.zeros((M, 1))
         v_b2 = np.zeros((CLASS, 1))
 
+    if DROPOUT == 1:
+        for i in range(BATCH):
+            be = np.zeros(M)
+            be_arr = np.random.choice(M, int(np.floor((1 - RHO_DO) * M)), replace=False)
+            for j in be_arr:
+                be[j] = 1
+            be = np.reshape(be, (be.shape[0], 1))
+            Dropout_Be[:, i:i+1] = be
+
     for ep in range(EPOCH):
         entropy_ave = 0
         i = 0
@@ -186,6 +201,10 @@ if l_or_t == 0:
             x = np.reshape(x, (x.shape[0], 1))
 
             y1 = layer(x, W1, b1, ACTFUN)
+
+            if DROPOUT == 1:
+                y1 = y1 * Dropout_Be[:, i:i+1]
+
             y2 = layer(y1, W2, b2, 99)
             if ACTFUN == 1:
                 a1 = W1.dot(x) + b1
@@ -218,10 +237,14 @@ if l_or_t == 0:
         elif ACTFUN == 1:
             En_over_a_1 = np.where((Amat1 > 0), En_over_Y_1, float(0))
 
+        if DROPOUT == 1:
+            En_over_a_1 = En_over_a_1 * Dropout_Be
+
         En_over_W1  = En_over_a_1.dot(Xmat.T)
         En_over_b1  = np.sum(En_over_a_1, axis=1)
         En_over_b1  = np.reshape(En_over_b1, (En_over_b1.shape[0], 1))
 
+        # Optimization
         if OPTTECH == 0:
             W2 = W2 - ETA * En_over_W2
             b2 = b2 - ETA * En_over_b2
@@ -258,7 +281,7 @@ if l_or_t == 0:
             t_b1, m_b1, v_b1, b1 = adam(t_b1, m_b1, v_b1, b1, En_over_b1)
 
 
-        np.savez("test.npz", W1, b1, W2, b2)
+    np.savez("test.npz", W1, b1, W2, b2)
 
 elif l_or_t == 1:
     rate = 0
@@ -284,6 +307,8 @@ elif l_or_t == 1:
             b2 = loaded_para['arr_3']
 
             y1 = layer(x, W1, b1, ACTFUN)
+            if DROPOUT == 1:
+                y1 = y1 * (1 - RHO_DO)
             a = layer(y1, W2, b2, 99)
             print(Y[j], np.argmax(a))
 
