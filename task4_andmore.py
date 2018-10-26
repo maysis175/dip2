@@ -11,12 +11,12 @@ M = 500                 # Intermediate layer
 CLASS = 10
 
 # Batch & Epoch
-BATCH = 512
+BATCH = 784
 EPOCH = 1000
 
 # Dropout
 # 0: off, 1: on
-DROPOUT = 1
+DROPOUT = 0
 Dropout_Be = np.zeros((M, BATCH))
 RHO_DO = 0.5
 
@@ -279,7 +279,6 @@ if l_or_t == 0:
             t_b2, m_b2, v_b2, b2 = adam(t_b2, m_b2, v_b2, b2, En_over_b2)
             t_W1, m_W1, v_W1, W1 = adam(t_W1, m_W1, v_W1, W1, En_over_W1)
             t_b1, m_b1, v_b1, b1 = adam(t_b1, m_b1, v_b1, b1, En_over_b1)
-
 
     np.savez("test.npz", W1, b1, W2, b2)
 
