@@ -7,12 +7,12 @@ mndata = MNIST("/export/home/016/a0161419/le4nn")
 SIZEX, SIZEY = 28, 28
 PIC_LEARN = 60000
 PIC_TEST = 10000
-M = 500                 # Intermediate layer
+M = 530                 # Intermediate layer
 CLASS = 10
 
 # Batch & Epoch
-BATCH = 784
-EPOCH = 1000
+BATCH = 1024
+EPOCH = 1024
 
 # Dropout
 # 0: off, 1: on
