@@ -12,13 +12,13 @@ CLASS = 10
 
 # Batch & Epoch
 BATCH = 1024
-EPOCH = 1024
+EPOCH = 1000
 
 # Dropout
 # 0: off, 1: on
-DROPOUT = 0
+DROPOUT = 1
 Dropout_Be = np.zeros((M, BATCH))
-RHO_DO = 0.5
+RHO_DO = 0.2
 
 # Activate function
 # 0: sigmoid, 1: ReLU
