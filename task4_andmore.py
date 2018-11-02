@@ -11,22 +11,22 @@ M = 530                 # Intermediate layer
 CLASS = 10
 
 # Batch & Epoch
-BATCH = 1024
-EPOCH = 1000
+BATCH = 100
+EPOCH = 100
 
 # Dropout
 # 0: off, 1: on
-DROPOUT = 1
+DROPOUT = 0
 Dropout_Be = np.zeros((M, BATCH))
 RHO_DO = 0.2
 
 # Activate function
 # 0: sigmoid, 1: ReLU
-ACTFUN = 1
+ACTFUN = 0
 
 # Optimization techniques
 # 0: SGD, 1: Momentum SGD, 2: AdaGrad, 3: RMSProp, 4: AdaDelta, 5: Adam
-OPTTECH = 5
+OPTTECH = 0
 
 ALPHA = 0.9         # for Momentum SGD
 ETA_ADAG = 0.001    # for AdaGrad
