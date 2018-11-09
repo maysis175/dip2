@@ -23,16 +23,16 @@ def unpickle(file):
 
 
 # Batch & Epoch
-BATCH = 100
-EPOCH = 1000
-M = 2050
+BATCH = 600
+EPOCH = 512
+M = 410
 CLASS = 10
 
 # Dropout
 # 0: off, 1: on
-DROPOUT = 0
+DROPOUT = 1
 Dropout_Be = np.zeros((M, BATCH))
-RHO_DO = 0.5
+RHO_DO = 0.6
 
 # Activate function
 # 0: sigmoid, 1: ReLU
@@ -40,10 +40,10 @@ ACTFUN = 1
 
 # Optimization techniques
 # 0: SGD, 1: Momentum SGD, 2: AdaGrad, 3: RMSProp, 4: AdaDelta, 5: Adam
-OPTTECH = 0
+OPTTECH = 2
 
 ALPHA = 0.9         # for Momentum SGD
-ETA_ADAG = 0.001    # for AdaGrad
+ETA_ADAG = 0.01    # for AdaGrad
 ETA = 0.01          # Learning rate
 
 RHO = 0.9           # RMSProp
@@ -129,7 +129,7 @@ def layer(x, W, b, actfun):
 
 np.set_printoptions(threshold=np.inf)
 
-l_or_t = input("Learning or training? (Training : 0, Testing : 1) : ")
+l_or_t = input("Training or testing? (Training : 0, Testing : 1) : ")
 l_or_t = int(l_or_t)
 if l_or_t == 0:
     # Preprocessing
