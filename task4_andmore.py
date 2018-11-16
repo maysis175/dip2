@@ -11,22 +11,22 @@ M = 530                 # Intermediate layer
 CLASS = 10
 
 # Batch & Epoch
-BATCH = 100
+BATCH = 500
 EPOCH = 100
 
 # Dropout
 # 0: off, 1: on
-DROPOUT = 0
+DROPOUT = 1
 Dropout_Be = np.zeros((M, BATCH))
 RHO_DO = 0.2
 
 # Activate function
 # 0: sigmoid, 1: ReLU
-ACTFUN = 0
+ACTFUN = 1
 
 # Optimization techniques
 # 0: SGD, 1: Momentum SGD, 2: AdaGrad, 3: RMSProp, 4: AdaDelta, 5: Adam
-OPTTECH = 0
+OPTTECH = 5
 
 ALPHA = 0.9         # for Momentum SGD
 ETA_ADAG = 0.001    # for AdaGrad
@@ -115,7 +115,7 @@ def layer(x, W, b, actfun):
 
 np.set_printoptions(threshold=np.inf)
 
-l_or_t = input("Learning or training? (Training : 0, Testing : 1) : ")
+l_or_t = input("Training or testing? (Training : 0, Testing : 1, Task4 : 2) : ")
 l_or_t = int(l_or_t)
 if l_or_t == 0:
     # Preprocessing
@@ -315,6 +315,32 @@ elif l_or_t == 1:
                 rate = rate + 1
 
         print(float(rate) / idx)
+
+elif l_or_t == 2:
+    idx = input("Input the number of an image: ")
+    idx = int(idx)
+    if idx >= 0 and idx < PIC_TEST:
+        X, Y = mndata.load_testing()
+        X = np.array(X)
+        X = X.reshape((X.shape[0], SIZEX, SIZEY))
+        Y = np.array(Y)
+
+        x = X[idx].ravel()
+        x = x / 255.
+        x = np.reshape(x, (x.shape[0], 1))
+
+        loaded_para = np.load("test.npz")
+        W1 = loaded_para['arr_0']
+        b1 = loaded_para['arr_1']
+        W2 = loaded_para['arr_2']
+        b2 = loaded_para['arr_3']
+
+        y1 = layer(x, W1, b1, ACTFUN)
+        if DROPOUT == 1:
+            y1 = y1 * (1 - RHO_DO)
+        a = layer(y1, W2, b2, 99)
+        print("Result: ", np.argmax(a))
+        print("Answer: ", Y[idx])
 
 else:
     print("Illegal input!")
